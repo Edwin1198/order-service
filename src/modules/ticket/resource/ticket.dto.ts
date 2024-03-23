@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Message } from 'src/config/helper/message-validator.helper';
 
@@ -44,6 +44,16 @@ export class TicketDto {
         required: false,
     })
     numberOfSeats: number;
+
+    @Type(() => Date)
+    @IsOptional()
+    @IsDate({ message: Message.IsDate('$property') })
+    @ApiProperty({
+      title: 'date_of_purchase',
+      example: '2024-03-18',
+      required: false,
+    })
+    dateOfPurchase: Date | null;
 
 }
 

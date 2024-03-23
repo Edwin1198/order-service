@@ -20,6 +20,9 @@ export class TicketEntity extends BaseEntity {
 
     @Column({ type: 'numeric', name: 'number_of_seats' })
     numberOfSeats: number;
+    
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'date_of_purchase' })
+    dateOfPurchase: Date | null;
 
     @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })

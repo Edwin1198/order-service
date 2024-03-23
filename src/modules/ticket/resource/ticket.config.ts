@@ -19,7 +19,7 @@ export const TicketConfig: PaginateConfig<TicketEntity> = {
         'payment.id', 'payment.price', 'payment.travelTime', 'payment.originDestination', 'payment.finalDestination',
         'horary.id', 'horary.day', 'horary.departureTime', 'horary.vehicle'],
     select: dataBd,
-    relations: ['user'],
+    relations: ['user', 'payment', 'horary'],
     filterableColumns: {
         id: [FilterOperator.EQ, FilterSuffix.NOT],
         userId: [FilterOperator.EQ, FilterSuffix.NOT],
