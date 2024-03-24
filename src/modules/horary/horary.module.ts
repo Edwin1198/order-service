@@ -7,6 +7,6 @@ import { HoraryEntity, VehicleEntity } from 'src/entity';
 @Module({
   imports: [TypeOrmModule.forFeature([VehicleEntity, HoraryEntity])],
   controllers: [HoraryController],
-  providers: [HoraryService]
+  providers: [HoraryService],
 })
-export class HoraryModule { }
+export class HoraryModule {}

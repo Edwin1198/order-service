@@ -2,14 +2,29 @@ import { Module } from '@nestjs/common';
 import { ProcessController } from './process.controller';
 import { ProcessService } from './process.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CityEntity, HoraryEntity, PayEntity, TicketEntity, UserEntity } from 'src/entity';
+import {
+  CityEntity,
+  HoraryEntity,
+  PayEntity,
+  TicketEntity,
+  UserEntity,
+} from 'src/entity';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, CityEntity, PayEntity, HoraryEntity, TicketEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      CityEntity,
+      PayEntity,
+      HoraryEntity,
+      TicketEntity,
+    ]),
+  ],
   controllers: [ProcessController],
-  providers: [ProcessService,
+  providers: [
+    ProcessService,
     {
       provide: 'ms-0001-catalogo',
       inject: [ConfigService],
@@ -21,7 +36,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
             port: configService.get('CATALOGOS_HOST_PORT'),
           },
         }),
-    }
-  ]
+    },
+  ],
 })
-export class ProcessModule { }
+export class ProcessModule {}

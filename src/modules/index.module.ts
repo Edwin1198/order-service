@@ -4,6 +4,6 @@ import { TicketModule } from './ticket/ticket.module';
 import { ProcessModule } from './process/process.module';
 
 @Module({
-    imports: [HoraryModule, TicketModule, ProcessModule]
+  imports: [HoraryModule, TicketModule, ProcessModule],
 })
-export class IndexModule { }
+export class IndexModule {}
