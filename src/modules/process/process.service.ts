@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { HoraryEntity, TicketEntity, UserEntity, VehicleEntity } from 'src/entity';
+import { HoraryEntity, PayEntity, TicketEntity, UserEntity, VehicleEntity } from 'src/entity';
 import { EntityManager, QueryRunner } from 'typeorm';
 import * as moment from 'moment-timezone';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { PurchasingProcessDto } from './resource/process.dto';
+import { PurchasingProcessDto, ticketDayPriceDto } from './resource/process.dto';
 
 @Injectable()
 export class ProcessService {
@@ -119,6 +119,33 @@ export class ProcessService {
                 await queryRunner.rollbackTransaction();
             }
             await queryRunner.release();
+        }
+    }
+
+    async ticketDayPrice(data: ticketDayPriceDto) {
+
+        const { dateOfPurchase, busNumber } = data
+        let message: string = null
+
+        try {
+            const data = await this.entityManager.createQueryBuilder(TicketEntity, 'ticket')
+                .leftJoinAndSelect(HoraryEntity, 'horary', 'ticket.horaryId = horary.id')
+                .leftJoinAndSelect(UserEntity, 'usert', 'ticket.userId = usert.id')
+                .leftJoinAndSelect(VehicleEntity, 'vehicle', 'horary.vehicle = vehicle.id')
+                .select('ticket')
+                .where('ticket.dateOfPurchase = :dateOfPurchase', { dateOfPurchase })
+                .andWhere('horary.day = :day', { day: moment(dateOfPurchase, 'YYYY-MM-DD').format('dddd') })
+                .andWhere('vehicle.busNumber = :busNumber', { busNumber })
+                .getMany();
+
+            return data
+        } catch (error) {
+            throw new HttpException(
+                {
+                    message: message ? message : error.message,
+                },
+                HttpStatus.BAD_REQUEST,
+            );
         }
     }
 }

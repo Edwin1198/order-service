@@ -65,4 +65,15 @@ export class HoraryService {
             return {}
         }
     }
+    async horaryView(id: number): Promise<{}> {
+        try {
+            const queryBuilder = await this.repository.createQueryBuilder()
+                .where("id_horary = :id", { id })
+                .getMany();
+            return queryBuilder
+        } catch (error) {
+            Logger.error(error.message, CRUDOLogger.titleDelete)
+            return {}
+        }
+    }
 }

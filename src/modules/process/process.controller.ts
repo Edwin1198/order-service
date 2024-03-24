@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProcessService } from './process.service';
-import { PurchasingProcessDto } from './resource/process.dto';
+import { PurchasingProcessDto, ticketDayPriceDto } from './resource/process.dto';
 import { TicketDto } from '../ticket/resource';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiCreatedResponse()
 @ApiTags('PROCESO')
@@ -22,5 +23,10 @@ export class ProcessController {
     @Patch('purchasing-process')
     async purchasingProcess(@Body() data: PurchasingProcessDto) {
         return this.service.purchasingProcess(data);
+    }
+
+    @MessagePattern({ cmd: 'ticketDayPrice' })
+    async ticketDayPrice(data: ticketDayPriceDto): Promise<any | {}> {
+        return this.service.ticketDayPrice(data);
     }
 }

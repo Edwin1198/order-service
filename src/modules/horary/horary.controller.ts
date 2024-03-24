@@ -5,6 +5,7 @@ import { ApiOkPaginatedResponse, ApiPaginationQuery, Paginate, PaginateQuery, Pa
 import { HoraryDto, HoraryDtoId, HoraryConfig } from './resource';
 import { HoraryEntity } from 'src/entity';
 import { CRUDOBody, CRUDOParam, CRUDOResponse, CRUDOperation } from 'src/config/helper/message-res.helper';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiCreatedResponse()
 @ApiTags('HORARIO')
@@ -66,5 +67,10 @@ export class HoraryController {
     @Delete(':id')
     async delete(@Param('id', ParseIntPipe) id: number): Promise<{}> {
         return this.service.delete(id);
+    }
+
+    @MessagePattern({ cmd: 'horaryView' })
+    async horaryView(id: number): Promise<HoraryDto | {}> {
+        return this.service.horaryView(id);
     }
 }
